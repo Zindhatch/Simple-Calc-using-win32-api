@@ -20,8 +20,9 @@ int charInt(char*); // returns multi digit number from arr of char having number
 int asc(int x); // returns single number of passing ASCII value
 int reverseNum(int num);  //returns reverse of passed number
 int checkMultiop(char*,int,int);
-void opArthmatic(int);
+int opArthmatic(int);
 void removeTailingZero(string);
+void cStrDel(char *,int,int); //for deleting c sstyle string character
 void doNoth(void);
 
 
@@ -36,8 +37,8 @@ char inputA[50];
 //string inputA;
 char inputBL[200];
 char inputB[50];
-float inputAi=0;
-float inputBi=0;
+double inputAi=0;
+double inputBi=0;
 int flag=0; //to check entering multidigit in editbox 0 for single and 1 for multi
 int numil=0; //number of character before oprator
 int numep=0; //size of inputBL ie inputA+op+inputB
@@ -140,6 +141,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                     }
                     mismis=0; //to say last pressed was not X
+                    outCame=0; //number is entered so screen no longer has output
                 }
                 break;
             case ID_Nb:
@@ -159,6 +161,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                     }
                     mismis=0; //to say last pressed was not X
+                    outCame=0; //number is entered so screen no longer has output
                 }
                 break;
             case ID_Nc:
@@ -178,6 +181,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                     }
                     mismis=0; //to say last pressed was not X
+                    outCame=0; //number is entered so screen no longer has output
                 }
                 break;
             case ID_Nd:
@@ -197,6 +201,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                     }
                     mismis=0; //to say last pressed was not X
+                    outCame=0; //number is entered so screen no longer has output
                 }
                 break;
             case ID_Ne:
@@ -216,6 +221,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                     }
                     mismis=0; //to say last pressed was not X
+                    outCame=0; //number is entered so screen no longer has output
                 }
                 break;
             case ID_Nf:
@@ -235,6 +241,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                     }
                     mismis=0; //to say last pressed was not X
+                    outCame=0; //number is entered so screen no longer has output
                 }
                 break;
             case ID_Ng:
@@ -254,6 +261,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                     }
                     mismis=0; //to say last pressed was not X
+                    outCame=0; //number is entered so screen no longer has output
                 }
                 break;
             case ID_Nh:
@@ -273,6 +281,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                     }
                     mismis=0; //to say last pressed was not X
+                    outCame=0; //number is entered so screen no longer has output
                 }
                 break;
             case ID_Ni:
@@ -292,6 +301,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                     }
                     mismis=0; //to say last pressed was not X
+                     outCame=0; //number is entered so screen no longer has output
                 }
                 break;
             case ID_Nj:
@@ -311,10 +321,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                     }
                     mismis=0; //to say last pressed was not X
+                     outCame=0; //number is entered so screen no longer has output
                 }
                 break;
             case ID_Nk:
                 {
+
                     eqeq=1;  // declare that a number is entered
                     if (eqeqop==1) eqeq=0;
                     doNoth();
@@ -330,6 +342,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                     }
                     mismis=0; //to say last pressed was not X
+                    outCame=0; //number is entered so screen no longer has output
                 }
                 break;
             case ID_Nmis:
@@ -367,7 +380,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     numep=GetWindowText(hEdit,inputBL,200);
                     oprandSearch(inputBL,numep,numil);
                     //SetWindowText(hEdit,"0");
-                    opArthmatic(opflag);
+                    //opArthmatic(opflag);
+                    if (opArthmatic(opflag)) goto eqend;
                     //MessageBox(NULL,resultS.c_str(),"",MB_OK);
                     SetWindowText(hEdit,resultS.c_str());
                     outCame=1;
@@ -391,10 +405,18 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                         MessageBox(hwnd,"too many continuous operators","Alert",MB_ICONERROR|MB_OK);
                         goto youp;
                     }
-                    inputAi=atoi(inputA);  //converts char array to int
+                    inputAi=stod(inputA);  //converts char array to int
                     if (numil>10) {
                         MessageBox(NULL,"Sorry I can't handle that much data", "Alert", MB_OK | MB_ICONEXCLAMATION);
                         SetWindowText(hEdit,"0");
+                    }
+                    else if (outCame==1) {
+                        //char out[3]={'0','+','\0'};
+                        strcpy(outG,resultS.c_str());
+                        strcat(outG,"+");
+                        SetWindowText(hEdit,outG);
+                        flag=1;
+                        outCame=0;
                     }
                     else if (flag==0 || mismis==1) {
                         char out[3]={'0','+','\0'};
@@ -425,10 +447,18 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                         MessageBox(hwnd,"too many continuous operators","Alert",MB_ICONERROR|MB_OK);
                         goto youpmi;
                     }
-                    inputAi=atoi(inputA);  //converts char array to int
+                    inputAi=stod(inputA);  //converts char array to int
                     if (numil>10) {
                         MessageBox(NULL,"Sorry I can't handle that much data", "Alert", MB_OK | MB_ICONEXCLAMATION);
                         SetWindowText(hEdit,"0");
+                    }
+                    else if (outCame==1) {
+                        //char out[3]={'0','+','\0'};
+                        strcpy(outG,resultS.c_str());
+                        strcat(outG,"-");
+                        SetWindowText(hEdit,outG);
+                        flag=1;
+                        outCame=0;
                     }
                     else if (flag==0 || mismis==1) {
                         char out[3]={'0','-','\0'};
@@ -459,10 +489,18 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                         MessageBox(hwnd,"too many continuous operators","Alert",MB_ICONERROR|MB_OK);
                         goto youpmul; //go to end of this command
                     }
-                    inputAi=atoi(inputA);  //converts char array to int
+                    inputAi=stod(inputA);  //converts char array to int
                     if (numil>10) {
                         MessageBox(NULL,"Sorry I can't handle that much data", "Alert", MB_OK | MB_ICONEXCLAMATION);
                         SetWindowText(hEdit,"0");
+                    }
+                    else if (outCame==1) {
+                        //char out[3]={'0','+','\0'};
+                        strcpy(outG,resultS.c_str());
+                        strcat(outG,"*");
+                        SetWindowText(hEdit,outG);
+                        flag=1;
+                        outCame=0;
                     }
                     else if (flag==0 || mismis==1) {
                         char out[3]={'0','*','\0'};
@@ -493,10 +531,18 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                         MessageBox(hwnd,"too many continuous operators","Alert",MB_ICONERROR|MB_OK);
                         goto youpmdiv;
                     }
-                    inputAi=atoi(inputA);  //converts char array to int
+                    inputAi=stod(inputA);  //converts char array to int
                     if (numil>10) {
                         MessageBox(NULL,"Sorry I can't handle that much data", "Alert", MB_OK | MB_ICONEXCLAMATION);
                         SetWindowText(hEdit,"0");
+                    }
+                    else if (outCame==1) {
+                        //char out[3]={'0','+','\0'};
+                        strcpy(outG,resultS.c_str());
+                        strcat(outG,"/");
+                        SetWindowText(hEdit,outG);
+                        flag=1;
+                        outCame=0;
                     }
                     else if (flag==0 || mismis==1) {
                         char out[3]={'0','/','\0'};
@@ -634,7 +680,19 @@ void oprandSearch(char arr[],int nu,int n) {
         inputB[temp]=arr[i];
         temp++;
     }
-    inputBi=atoi(inputB);
+    inputBi=stod(inputB);
+    /*inputB=arr.substr((n+1),(nu-n)); //c++ code
+    inputBi=stod(inputB);*/
+}
+
+void cStrDel(char *str,int m,int n) {
+    // m is size of  string
+    //n is index of value which u want to delete
+    //for lasr element idex is m-1
+    int i;
+    for (i=n;i<m;i++) {
+        str[i]=str[i+1];
+    }
 }
 
 int arrSize(char arr[]) {
@@ -646,19 +704,7 @@ int arrSize(char arr[]) {
     return l;
 }
 
-int charInt(char arr[],int n) {
-    int i,num=0;
-    double temp1;
-    for (i=0;i<n;i++) {
-        /*if (n==1) {
-        num=asc((int)arr[i]);
-        }*/
-        temp1=pow(10,i);
-        num = num + (temp1*asc(arr[i]));
-    }
-    num=reverseNum(num);
-    return num;
-}
+
 
 int reverseNum(int num) {
 	int i,result=0,l=0;
@@ -692,30 +738,6 @@ int reverseNum(int num) {
 	return result;
 }
 
-int asc(int x) {
-    //to convert ascii top int
-    if (x==48) return 0;
-    else if (x==49) return 1;
-    else if (x==50) return 2;
-    else if (x==51) return 3;
-    else if (x==52) return 4;
-    else if (x==53) return 5;
-    else if (x==54) return 6;
-    else if (x==55) return 7;
-    else if (x==56) return 8;
-    else if (x==57) return 9;
-    else if (x==0) return 48;
-    else if (x==1) return 49;
-    else if (x==2) return 50;
-    else if (x==3) return 51;
-    else if (x==4) return 52;
-    else if (x==5) return 53;
-    else if (x==6) return 54;
-    else if (x==7) return 55;
-    else if (x==8) return 56;
-    else if (x==9) return 57;
-    return 0;
-}
 
 int checkMultiop(char arr[],int n,int nu) {
     //nu is size of array excluding null charater
@@ -730,16 +752,13 @@ int checkMultiop(char arr[],int n,int nu) {
     return j;
 }
 
-void opArthmatic(int n) {
+int opArthmatic(int n) {
     //int i,j;
     if (n==0) {
 
     }
     else if (n==1) {
         result = inputAi + inputBi;
-        resultRound=to_string(inputAi);
-        //resultRound=to_string(result);
-        //MessageBox(NULL,resultRound.c_str(),"",MB_OK);
         resultTemp = result - (int)result;
         resultRound=to_string(resultTemp);
         //MessageBox(NULL,resultRound.c_str(),"",MB_OK);
@@ -753,42 +772,74 @@ void opArthmatic(int n) {
         //
     }
     else if (n==2) {
-        if (inputAi>inputBi)
+        /*if (inputAi>inputBi)
         result = inputAi - inputBi;
         else
             result = inputBi-inputAi;
-        resultS=to_string(result);
+        resultS=to_string(result);*/
+        result = inputAi - inputBi;
+        resultTemp = result - (int)result;
+        resultRound=to_string(resultTemp);
+        //MessageBox(NULL,resultRound.c_str(),"",MB_OK);
+        if (resultTemp>0) {
+          resultS=to_string(result);
+          removeTailingZero(resultS);
+        }
+        else {
+        resultS=to_string((int)result);
+        }
     }
     else if (n==3) {
         result = inputAi * inputBi;
-        resultS=to_string(result);
+        resultTemp = result - (int)result;
+        resultRound=to_string(resultTemp);
+        //MessageBox(NULL,resultRound.c_str(),"",MB_OK);
+        if (resultTemp>0) {
+          resultS=to_string(result);
+          removeTailingZero(resultS);
+        }
+        else {
+        resultS=to_string((int)result);
+        }
     }
     else if (n==4) {
+        if (inputBi==0) {
+            SetWindowText(hEdit,"Can't divide by zero");
+            cStrDel(outG,strlen(outG),(strlen(outG)-1));
+            return 1;
+        }
         result = inputAi / inputBi;
-        resultS=to_string(result);
+        resultTemp = result - (int)result;
+        resultRound=to_string(resultTemp);
+        //MessageBox(NULL,resultRound.c_str(),"",MB_OK);
+        if (resultTemp>0) {
+          resultS=to_string(result);
+          removeTailingZero(resultS);
+        }
+        else {
+        resultS=to_string((int)result);
+        }
     }
-
-
+    return 0;
 
 }
 
 void removeTailingZero(string str) {
-    int i,j=0,k=0;
-    // k is number of zero after decimal
-    /*for (i=0;i<300;i++) {
-        if (arr[i]=='\0') break;
-        j++;
-    }*/
-    j=str.size();
-    for (i=j;i>0;i--) {
-        if (str[i]=='0') {
-            k++;
-        }
-        else if (str[i]>0) break;
-        else if (str[i]=='.') break;
+    int j=1,k=1;
+
+    for (;k==1;) {
+    j=(str.size())-1;
+    if (str[j]=='.') {
+            str.erase(j,1);
+        k=0;
     }
-    j=j-k;
-    str.erase(j, k);
+    doNoth();
+    if (str[j]=='0')
+        str.erase(j,1);
+    else k=0;
+    }
+    resultS=str;
+    //MessageBox(NULL,str.c_str(),"",MB_OK);
 
 }
 
