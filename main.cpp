@@ -3,11 +3,11 @@
 #include <stdio.h>
 #include "resource.h"
 #include <winuser.h>
-#include <iostream>
+//#include <iostream>
 #include <math.h>
 #include <cstdlib>
 #include <string>
-#include <sstream>
+//#include <sstream>
 using namespace std;
 
 const char g_szClassName[] = "myWindowClass";
@@ -88,6 +88,113 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch(msg)
     {
+    case WM_KEYDOWN:
+        {
+
+            switch(wParam)
+            {
+            case VK_NUMPAD1:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Na,0);
+                }
+                break;
+            case VK_NUMPAD0:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Nk,0);
+                }
+                break;
+            case VK_NUMPAD2:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Nb,0);
+                }
+                break;
+            case VK_NUMPAD3:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Nc,0);
+                }
+                break;
+            case VK_NUMPAD4:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Nd,0);
+                }
+                break;
+            case VK_NUMPAD5:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Ne,0);
+                }
+                break;
+            case VK_NUMPAD6:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Nf,0);
+                }
+                break;
+            case VK_NUMPAD7:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Ng,0);
+                }
+                break;
+            case VK_NUMPAD8:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Nh,0);
+                }
+                break;
+            case VK_NUMPAD9:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Ni,0);
+                }
+                break;
+            case VK_DECIMAL:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Nj,0);
+                }
+                break;
+            case VK_ADD:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Nplus,0);
+                }
+                break;
+            case VK_SUBTRACT:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Nminus,0);
+                }
+                break;
+            case VK_MULTIPLY:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Nmulti,0);
+                }
+                break;
+            case VK_DIVIDE:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Ndivide,0);
+                }
+                break;
+            case VK_BACK:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Nmis,0);
+                }
+                break;
+            case VK_RETURN:
+                {
+                    SendMessage(hwnd,WM_COMMAND,ID_Nl,0);
+                }
+                break;
+            case VK_ESCAPE:
+                {
+                    char init[2]={'0','\0'};
+                    strcpy(inputA,init);
+                    strcpy(inputB,init);
+                    strcpy(outG,init);
+                    strcpy(inputBL,init);
+                    inputAi=0;
+                    inputBi=0;
+                    result=0;
+                }
+                break;
+
+            }
+        }
+        break;
+
         case WM_RBUTTONDOWN:
         {
             char szFileName[MAX_PATH];
@@ -97,13 +204,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             MessageBox(hwnd, "Under Construction!", "This program is:", MB_OKCANCEL | MB_ICONINFORMATION);
         }
         break;
-        case VK_RETURN:
-            {
-                char szInput[MAX_PATH];
-                GetWindowText(GetDlgItem(hwnd, 101), szInput, MAX_PATH);
-                MessageBox(NULL, szInput, "captio",MB_ICONERROR| MB_OK);
-            }
-            break;
+
         case WM_COMMAND:
             switch(LOWORD(wParam))
             {
@@ -409,6 +510,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     if (numil>10) {
                         MessageBox(NULL,"Sorry I can't handle that much data", "Alert", MB_OK | MB_ICONEXCLAMATION);
                         SetWindowText(hEdit,"0");
+                        flag=0;
                     }
                     else if (outCame==1) {
                         //char out[3]={'0','+','\0'};
@@ -451,6 +553,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     if (numil>10) {
                         MessageBox(NULL,"Sorry I can't handle that much data", "Alert", MB_OK | MB_ICONEXCLAMATION);
                         SetWindowText(hEdit,"0");
+                        flag=0;
                     }
                     else if (outCame==1) {
                         //char out[3]={'0','+','\0'};
@@ -493,6 +596,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     if (numil>10) {
                         MessageBox(NULL,"Sorry I can't handle that much data", "Alert", MB_OK | MB_ICONEXCLAMATION);
                         SetWindowText(hEdit,"0");
+                        flag=0;
                     }
                     else if (outCame==1) {
                         //char out[3]={'0','+','\0'};
@@ -535,6 +639,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     if (numil>10) {
                         MessageBox(NULL,"Sorry I can't handle that much data", "Alert", MB_OK | MB_ICONEXCLAMATION);
                         SetWindowText(hEdit,"0");
+                        flag=0;
                     }
                     else if (outCame==1) {
                         //char out[3]={'0','+','\0'};
